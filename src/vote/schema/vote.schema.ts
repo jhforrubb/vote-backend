@@ -18,4 +18,8 @@ export class Vote {
   option_id: Option;
 }
 
-export const VoteSchema = SchemaFactory.createForClass(Vote);
+const VoteSchema = SchemaFactory.createForClass(Vote);
+
+VoteSchema.index({ campaign_id: 1, hkid: 1 });
+
+export { VoteSchema };
