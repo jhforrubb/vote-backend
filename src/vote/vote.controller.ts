@@ -12,8 +12,15 @@ import { VoteService } from './vote.service';
 import * as hkid from 'hkid';
 import { CampaignService } from 'src/campaign/campaign.service';
 import { OptionService } from 'src/option/option.service';
-import moment from 'moment';
+import * as bcrypt from 'bcryptjs';
+import { signKey } from 'src/utils/signKey';
+import config from 'src/config';
+import {
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('votes')
 @Controller('vote')
 export class VoteController {
   constructor(
@@ -23,6 +30,7 @@ export class VoteController {
     private optionService: OptionService,
   ) {}
 
+  @ApiOperation({ summary: 'Create vote' })
   @Post()
   async create(@Body() createVoteDto: CreateVoteDto) {
     //validate hkid
@@ -52,15 +60,23 @@ export class VoteController {
     }
 
     //check vote
+    const hash = signKey(config.hash.hashSaltKey, createVoteDto.hkid);
+
     const checkVote = await this.voteService.findOne({
       campaign_id: createVoteDto.campaign_id,
-      hkid: createVoteDto.hkid,
+      hkid: hash,
     });
 
     if (checkVote) {
       throw new HttpException('Duplicate vote', HttpStatus.BAD_REQUEST);
     }
 
-    return this.voteService.create(createVoteDto);
+    const createParams = {
+      campaign_id: createVoteDto.campaign_id,
+      option_id: createVoteDto.option_id,
+      hkid: hash,
+    };
+
+    return this.voteService.create(createParams);
   }
 }

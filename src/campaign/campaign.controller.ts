@@ -16,7 +16,13 @@ import * as _ from 'lodash';
 import { OptionService } from 'src/option/option.service';
 import { VoteService } from 'src/vote/vote.service';
 import { Request } from 'express';
+import {
+  ApiHeader,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('campaigns')
 @Controller('campaign')
 export class CampaignController {
   constructor(
@@ -26,6 +32,7 @@ export class CampaignController {
     private optionService: OptionService,
   ) {}
 
+  @ApiOperation({ summary: 'Create campaign' })
   @Post()
   async create(@Body() createCampaignDto: CreateCampaignDto) {
     const start = moment(createCampaignDto.start_time).toISOString();
@@ -49,19 +56,21 @@ export class CampaignController {
         name: item,
       };
     });
-    // await this.optionService.createMany(optionsParams);
+
     const options = await this.optionService.createMany(optionsParams);
 
-    return { ...campaign, options };
+    return { ...campaign.toObject(), options };
   }
 
+  @ApiOperation({ summary: 'Get all campaign' })
+  @ApiHeader({ name: 'hkid' })
   @Get()
   async findAll(@Req() req: Request) {
     const hkid = req.headers.hkid;
 
-    if (!hkid) {
-      throw new HttpException('Invalid hkid', HttpStatus.BAD_REQUEST);
-    }
+    // if (!hkid) {
+    //   throw new HttpException('Invalid hkid', HttpStatus.BAD_REQUEST);
+    // }
 
     const campaigns = await this.campaignService.findCampaignVote();
     const res = Promise.all(
@@ -70,13 +79,15 @@ export class CampaignController {
           { $match: { campaign_id: campaign._id } },
           { $group: { _id: '$option_id', count: { $count: {} } } },
         ]);
+        if (hkid) {
+          const hkidVoted = await this.voteService.findOne({
+            hkid: hkid,
+            campaign_id: campaign._id,
+          });
 
-        const hkidVoted = await this.voteService.findOne({
-          hkid: hkid,
-          campaign_id: campaign._id,
-        });
-
-        return { ...campaign, count: count, voted: hkidVoted };
+          return { ...campaign, count: count, voted: hkidVoted };
+        }
+        return { ...campaign, count: count };
       }),
     );
 
