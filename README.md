@@ -1,6 +1,15 @@
+This is an application which allows readers to express their opinions by casting votes to various campaigns.
+
+### Prerequisites
+
+- Git
+- NodeJS
+- MongoDB
+- Docker
+
 ### Env setting
 
--   yarn
+- yarn
 
 ### VScode setting reference
 
@@ -20,9 +29,20 @@ https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
 }
 ```
 
+### Installation
+
+```
+$ git clone https://github.com/jhforrubb/vote-backend.git
+$ cd <project_name>
+$ yarn
+
+```
+
 ## Get started
 
 To get start on local, start all dependencies first.
+
+Create .env file in project root directory and fill it following .env.example file
 
 ```
 make start-mongo
@@ -39,3 +59,15 @@ Stop all local dependencies
 ```cli
 make stop-mongo
 ```
+
+## Test
+
+```
+#unit tests
+$yarn test
+
+```
+
+## API documentation
+
+http://localhost:4000/api
