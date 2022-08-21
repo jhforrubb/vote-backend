@@ -1,11 +1,11 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { OptionModule } from 'src/option/option.module';
-import { VoteModule } from 'src/vote/vote.module';
+import { OptionModule } from '../option/option.module';
+import { VoteModule } from '../vote/vote.module';
 import { CampaignController } from './campaign.controller';
 import { CampaignService } from './campaign.service';
-import { OptionService } from 'src/option/option.service';
-import { VoteService } from 'src/vote/vote.service';
+import { OptionService } from '../option/option.service';
+import { VoteService } from '../vote/vote.service';
 import { Campaign, CampaignSchema } from './schema/campaign.schema';
 
 @Module({

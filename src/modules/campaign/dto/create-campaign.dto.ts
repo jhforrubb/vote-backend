@@ -5,10 +5,10 @@ export class CreateCampaignDto {
   title: string;
 
   @ApiProperty({ example: '2022-8-20' })
-  start_time: string;
+  startTime: string;
 
   @ApiProperty({ example: '2022-9-20' })
-  end_time: string;
+  endTime: string;
 
   @ApiProperty({ type: [String], example: ['dummy', 'fake', 'sample'] })
   options: string[];

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CampaignModule } from './campaign/campaign.module';
-import { VoteModule } from './vote/vote.module';
-import { OptionModule } from './option/option.module';
+import { CampaignModule } from './modules/campaign/campaign.module';
+import { VoteModule } from './modules/vote/vote.module';
+import { OptionModule } from './modules/option/option.module';
 import config from './config';
 
 const username = config.mongoDB.username;

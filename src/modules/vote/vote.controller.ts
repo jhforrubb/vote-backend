@@ -10,15 +10,12 @@ import {
 import { CreateVoteDto } from './dto/create-vote.dto';
 import { VoteService } from './vote.service';
 import * as hkid from 'hkid';
-import { CampaignService } from 'src/campaign/campaign.service';
-import { OptionService } from 'src/option/option.service';
+import { CampaignService } from 'src/modules/campaign/campaign.service';
+import { OptionService } from '../option/option.service';
 import * as bcrypt from 'bcryptjs';
-import { signKey } from 'src/utils/signKey';
+import { createHash } from 'src/utils/createHash';
 import config from 'src/config';
-import {
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('votes')
 @Controller('vote')
@@ -35,35 +32,35 @@ export class VoteController {
   async create(@Body() createVoteDto: CreateVoteDto) {
     //validate hkid
     if (!hkid.validate(createVoteDto.hkid)) {
-      throw new HttpException('Invalid input', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Invalid hkid', HttpStatus.BAD_REQUEST);
     }
 
     //check campaign
     const campaign = await this.campaignService.findById(
-      createVoteDto.campaign_id,
+      createVoteDto.campaignId,
     );
 
     if (!campaign) {
-      throw new HttpException('Invalid input', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Invalid campaign', HttpStatus.BAD_REQUEST);
     }
 
     //check end time
-    if (new Date(campaign.end_time) < new Date()) {
+    if (new Date(campaign.endTime) < new Date()) {
       throw new HttpException('Vote ended', HttpStatus.BAD_REQUEST);
     }
 
     //check option
-    const option = await this.optionService.findById(createVoteDto.option_id);
+    const option = await this.optionService.findById(createVoteDto.optionId);
 
     if (!option) {
-      throw new HttpException('Invalid input', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Invalid option', HttpStatus.BAD_REQUEST);
     }
 
     //check vote
-    const hash = signKey(config.hash.hashSaltKey, createVoteDto.hkid);
+    const hash = createHash(createVoteDto.hkid);
 
     const checkVote = await this.voteService.findOne({
-      campaign_id: createVoteDto.campaign_id,
+      campaignId: createVoteDto.campaignId,
       hkid: hash,
     });
 
@@ -72,8 +69,8 @@ export class VoteController {
     }
 
     const createParams = {
-      campaign_id: createVoteDto.campaign_id,
-      option_id: createVoteDto.option_id,
+      campaignId: createVoteDto.campaignId,
+      optionId: createVoteDto.optionId,
       hkid: hash,
     };
 

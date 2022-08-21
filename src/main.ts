@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { Vote } from './vote/schema/vote.schema';
-import { Campaign } from './campaign/schema/campaign.schema';
-import { Option } from './option/schema/option.schema';
+import { Vote } from './modules/vote/schema/vote.schema';
+import { Campaign } from './modules/campaign/schema/campaign.schema';
+import { Option } from './modules/option/schema/option.schema';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

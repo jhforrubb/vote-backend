@@ -10,7 +10,7 @@ export type OptionDocument = Option & Document;
 export class Option {
   @ApiProperty()
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Campaign' })
-  campaign_id: Campaign;
+  campaignId: Campaign;
 
   @ApiProperty()
   @Prop({ required: true })

@@ -12,11 +12,11 @@ export class Campaign {
 
   @ApiProperty()
   @Prop({ required: true })
-  start_time: string;
+  startTime: string;
 
   @ApiProperty()
   @Prop({ required: true })
-  end_time: string;
+  endTime: string;
 }
 
 export const CampaignSchema = SchemaFactory.createForClass(Campaign);

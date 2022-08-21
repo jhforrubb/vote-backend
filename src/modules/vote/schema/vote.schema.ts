@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import * as mongoose from 'mongoose';
-import { Campaign } from 'src/campaign/schema/campaign.schema';
-import { Option } from 'src/option/schema/option.schema';
+import { Campaign } from 'src/modules/campaign/schema/campaign.schema';
+import { Option } from '../../option/schema/option.schema';
 import { ApiProperty } from '@nestjs/swagger';
 
 export type VoteDocument = Vote & Document;
@@ -15,15 +15,15 @@ export class Vote {
 
   @ApiProperty()
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Campaign' })
-  campaign_id: Campaign;
+  campaignId: Campaign;
 
   @ApiProperty()
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Option' })
-  option_id: Option;
+  optionId: Option;
 }
 
 const VoteSchema = SchemaFactory.createForClass(Vote);
 
-VoteSchema.index({ campaign_id: 1, hkid: 1 });
+VoteSchema.index({ campaignId: 1, hkid: 1 });
 
 export { VoteSchema };

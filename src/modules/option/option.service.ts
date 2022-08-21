@@ -14,7 +14,7 @@ export class OptionService {
     await createdOption.collection.insertMany(createOptionDto);
 
     return await this.optionModel
-      .find({ campaign_id: createOptionDto[0].campaign_id })
+      .find({ campaignId: createOptionDto[0].campaignId })
       .exec();
   }
 

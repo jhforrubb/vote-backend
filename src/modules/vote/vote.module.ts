@@ -1,7 +1,7 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CampaignModule } from 'src/campaign/campaign.module';
-import { OptionModule } from 'src/option/option.module';
+import { CampaignModule } from 'src/modules/campaign/campaign.module';
+import { OptionModule } from '../option/option.module';
 import { Vote, VoteSchema } from './schema/vote.schema';
 import { VoteController } from './vote.controller';
 import { VoteService } from './vote.service';

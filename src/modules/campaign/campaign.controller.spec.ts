@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CampaignController } from './campaign.controller';
 import { CampaignService } from './campaign.service';
-import { VoteService } from 'src/vote/vote.service';
-import { OptionService } from 'src/option/option.service';
+import { VoteService } from '../vote/vote.service';
+import { OptionService } from '../option/option.service';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { ObjectId } from 'mongodb';
 

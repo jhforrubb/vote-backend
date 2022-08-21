@@ -29,7 +29,7 @@ export class CampaignService {
         $lookup: {
           from: 'options',
           localField: '_id',
-          foreignField: 'campaign_id',
+          foreignField: 'campaignId',
           as: 'options',
         },
       },
